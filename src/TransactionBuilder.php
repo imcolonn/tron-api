@@ -31,13 +31,13 @@ class TransactionBuilder
      * If the recipient address does not exist, a corresponding account will be created on the blockchain.
      *
      * @param string $to
-     * @param float $amount
+     * @param int|float|string $amount
      * @param string|null $from
      * @param string|null $message
      * @return array
      * @throws TronException
      */
-    public function sendTrx(string $to, float $amount, string $from = null, string $message = null)
+    public function sendTrx(string $to, int|float|string $amount, string $from = null, string $message = null)
     {
         if ($amount < 0) {
             throw new TronException('Invalid amount provided');
@@ -251,14 +251,14 @@ class TransactionBuilder
      * Freezes an amount of TRX.
      * Will give bandwidth OR Energy and TRON Power(voting rights) to the owner of the frozen tokens.
      *
-     * @param float $amount
+     * @param int|float|string $amount
      * @param int $duration
      * @param string $resource
      * @param string|null $address
      * @return array
      * @throws TronException
      */
-    public function freezeBalance(float $amount = 0, int $duration = 3, string $resource = 'BANDWIDTH', string $address = null)
+    public function freezeBalance(int|float|string $amount = 0, int $duration = 3, string $resource = 'BANDWIDTH', string $address = null)
     {
         if(empty($address))
             throw new TronException('Address not specified');

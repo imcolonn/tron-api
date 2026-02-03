@@ -51,7 +51,7 @@ class Tron implements TronInterface
      *      - hex:      41****
      *
      * @var array
-    */
+     */
     public $address = [
         'base58'    =>  null,
         'hex'       =>  null
@@ -61,14 +61,14 @@ class Tron implements TronInterface
      * Private key
      *
      * @var string
-    */
+     */
     protected $privateKey;
 
     /**
      * Default block
      *
      * @var string|integer|bool
-    */
+     */
     protected $defaultBlock = 'latest';
 
     /**
@@ -89,14 +89,14 @@ class Tron implements TronInterface
      * Provider manager
      *
      * @var TronManager
-    */
+     */
     protected $manager;
 
     /**
      * Object Result
      *
      * @var bool
-    */
+     */
     protected $isObject = false;
 
     /**
@@ -155,7 +155,7 @@ class Tron implements TronInterface
      * Фасад для Laravel
      *
      * @return Tron
-    */
+     */
     public function getFacade(): Tron {
         return $this;
     }
@@ -249,7 +249,7 @@ class Tron implements TronInterface
      * Get default block
      *
      * @return string|integer|bool
-    */
+     */
     public function getDefaultBlock()
     {
         return $this->defaultBlock;
@@ -285,7 +285,7 @@ class Tron implements TronInterface
      * Get account address
      *
      * @return array
-    */
+     */
     public function getAddress(): array
     {
         return $this->address;
@@ -675,14 +675,14 @@ class Tron implements TronInterface
      * Send transaction to Blockchain
      *
      * @param string $to
-     * @param float $amount
+     * @param int|float|string $amount
      * @param string|null $message
      * @param string|null $from
      *
      * @return array
      * @throws TronException
      */
-    public function sendTransaction(string $to, float $amount, string $from = null, string $message = null): array
+    public function sendTransaction(string $to, int|float|string $amount, string $from = null, string $message = null): array
     {
         if (is_null($from)) {
             $from = $this->address['hex'];
@@ -700,14 +700,14 @@ class Tron implements TronInterface
      * Send token transaction to Blockchain
      *
      * @param string $to
-     * @param float $amount
+     * @param int|float|string $amount
      * @param int $tokenID
      * @param string $from
      *
      * @return array
      * @throws TronException
      */
-    public function sendTokenTransaction(string $to, float $amount, int $tokenID = null, string $from = null): array
+    public function sendTokenTransaction(string $to, int|float|string $amount, int $tokenID = null, string $from = null): array
     {
         if (is_null($from)) {
             $from = $this->address['hex'];
@@ -1296,7 +1296,7 @@ class Tron implements TronInterface
         $address = (!is_null($address) ? $address : $this->address['hex']);
 
         return $this->manager->request('/wallet/getaccountresource', [
-           'address' =>  $this->toHex($address)
+            'address' =>  $this->toHex($address)
         ]);
     }
 
@@ -1385,5 +1385,19 @@ class Tron implements TronInterface
         return $this->manager->request('/wallet/getassetissuebyid', [
             'value' =>  $token_id
         ]);
+    }
+
+    /**
+     *  TRX All transactions
+     *
+     * @param string $address
+     * @param int $limit
+     * @return array
+     *
+     * @throws TronException
+     */
+    public function getTransactions(string $address, int $limit = 100): array
+    {
+        return $this->manager->request("v1/accounts/{$address}/transactions?limit={$limit}", [], 'get');
     }
 }
